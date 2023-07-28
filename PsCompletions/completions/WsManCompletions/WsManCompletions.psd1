@@ -9,63 +9,65 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule = 'WsManCompletions.psm1'
+    RootModule             = 'WsManCompletions.ps1'
 
     # Version number of this module.
-    ModuleVersion = '0.1.0'
+    ModuleVersion          = '0.1.0'
     
     # Supported PSEditions
-    CompatiblePSEditions = @(
+    CompatiblePSEditions   = @(
         'Core'
     )
     
     # ID used to uniquely identify this module
-    GUID = '7151d6b6-8dde-4d33-a65f-553c29444ac8'
+    GUID                   = '7151d6b6-8dde-4d33-a65f-553c29444ac8'
     
     # Author of this module
-    Author = 'vollsynthetik@gmail.com'
+    Author                 = 'vollsynthetik@gmail.com'
     
     # Company or vendor of this module
-    CompanyName = 'Darkstar GmbH'
+    CompanyName            = 'Darkstar GmbH'
     
     # Copyright statement for this module
-    Copyright = '(c) Darkstar GmbH. All rights reserved.'
+    Copyright              = '(c) Darkstar GmbH. All rights reserved.'
     
     # Description of the functionality provided by this module
-    Description = 'Provides completion functionality for the WSMan modules'
+    Description            = 'Provides completion functionality for the WSMan modules'
     
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion = '7.0'
+    PowerShellVersion      = '7.0'
     
     # Name of the PowerShell host required by this module
-    PowerShellHostName = 'ConsoleHost'
+    PowerShellHostName     = 'ConsoleHost'
     
     # Minimum version of the PowerShell host required by this module
-    PowerShellHostVersion = '2.0'
+    PowerShellHostVersion  = '2.0'
     
     # Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
     DotNetFrameworkVersion = '7.0'
     
     # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-    CLRVersion = '5.0'
+    CLRVersion             = '5.0'
     
     # Processor architecture (None, X86, Amd64) required by this module
-    ProcessorArchitecture = 'None'
+    ProcessorArchitecture  = 'None'
     
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules = @(
+    RequiredModules        = @(
         'TabExpansionPlusPlus'
     )
     
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = @(
+    RequiredAssemblies     = @(
         'System.Management.Automation',
         'Microsoft.Management.Infrastructure'
         'Microsoft.WSMan.Management'
     )
     
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-    ScriptsToProcess = @()
+    ScriptsToProcess       = @(
+        'WsManCompletions'
+    )
     
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess = @()

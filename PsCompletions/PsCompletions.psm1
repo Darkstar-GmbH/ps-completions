@@ -11,8 +11,8 @@
 using module completions/CimCompletions
 using module completions/WsManCompletions
 
-using namespace cimcomp::CimCompletions
-using namespace wsmancomp::WsManCompletions
+using namespace CimCompletions
+using namespace WsManCompletions
 
 # this is the main class that registers all completion handlers
 class PsCompletions {
@@ -39,3 +39,5 @@ function RegisterCompletions {
 # eventually, register all completion handler
 RegisterCompletions
 
+# do not export anything
+Export-ModuleMember
