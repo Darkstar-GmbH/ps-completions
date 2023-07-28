@@ -1,15 +1,16 @@
-using assembly "C:\Windows\assembly\System.Management.Automation.dll"
-using assembly "C:\Windows\assembly\System.Management.Automation.Core.dll"
-using assembly "C:\Windows\assembly\Microsoft.Management.Infrastructure.dll"
-using assembly "C:\Windows\assembly\Microsoft.WSMan.Management.dll"
+#Requires -Modules @{ModuleName="Microsoft.WSMan.Management";ModuleVersion="7.0.0"}
+#Requires -Modules @{ModuleName="PKI";ModuleVersion="1.0.0.0"}
+#Requires -Modules @{ModuleName="CimCmdlets";ModuleVersion="7.0.0"}
+#Requires -Modules @{ModuleName="TabExpansionPlusPlus";ModuleVersion="1.2"}
 
 using module Microsoft.WSMan.Management
 using module PKI
 using module CimCmdlets
-using module TabExpansionPlusPlus
 
 using namespace Microsoft.Management.Infrastructure
 using namespace System.Management.Automation
+
+Import-Module TabExpansionPlusPlus
 
 <#
 .SYNOPSIS
@@ -33,12 +34,24 @@ class WsManCompletions {
         $this.$this = [WsManCompletions]::new()
         return $this
     }
+    
     [void] Initialize() {
         $registerFunction = $(Get-Command -Module TabExpansionPlusPlus -Name Register-ArgumentCompleter)[0]
 
-        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "ResourceURI" -ScriptBlock $function:GetWsManCompletions
-        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "ComputerName" -ScriptBlock $function:GetWsManCompletions  
-        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "CertificateThumbprint" -ScriptBlock $function:GetWsManCompletions 
+        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "ResourceURI" -ScriptBlock {
+            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+            return $this.GetWsManCompletions($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        }
+
+        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "ComputerName" -ScriptBlock { 
+            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+            return $this.GetWsManCompletions($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        }
+
+        & $registerFunction -CommandName "Get-WSManInstance" -ParameterName "CertificateThumbprint" -ScriptBlock {
+            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+            return $this.GetWsManCompletions($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        } 
     }
 
     [CompletionResult[]] GetWsManCompletions(

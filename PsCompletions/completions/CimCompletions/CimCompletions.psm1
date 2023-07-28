@@ -1,12 +1,13 @@
-using assembly "C:\Windows\assembly\Microsoft.WSMan.Management.dll"
-using assembly "C:\Windows\assembly\Microsoft.Management.Infrastructure.dll"
+#Requires -Modules @{ModuleName="TabExpansionPlusPlus";ModuleVersion="1.2"}
+#Requires -Modules @{ModuleName="CimCmdlets";ModuleVersion="7.0.0"}
+#Requires -Modules @{ModuleName="PKI";ModuleVersion="1.0.0.0"}
 
 using namespace Microsoft.Management.Infrastructure
 using namespace System.Management.Automation
 
-using module CimCmdlets
-using module PKI
-using module TabExpansionPlusPlus
+Import-Module PKI
+Import-Module CimCmdlets
+Import-Module TabExpansionPlusPlus
 
 <#
 .SYNOPSIS
@@ -34,11 +35,18 @@ class CimCompletions {
     [void] Initialize() {
         $registerFunction = $(Get-Command -Module TabExpansionPlusPlus -Name Register-ArgumentCompleter)[0]
 
-        & $registerFunction -CommandName "Get-CimInstance" -ParameterName "ClassName" -ScriptBlock { $function:GetWsManCompletions }
-        & $registerFunction -CommandName "Get-CimInstance" -ParameterName "CimInstance" -ScriptBlock { $function:GetWsManCompletions }
+        & $registerFunction -CommandName "Get-CimInstance" -ParameterName "ClassName" -ScriptBlock { 
+            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+            return $this.GetCimInstanceCompletions($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        }
+
+        & $registerFunction -CommandName "Get-CimInstance" -ParameterName "CimInstance" -ScriptBlock {
+            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+            return $this.GetCimInstanceCompletions($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        }
     }
 
-    [CompletionResult[]] GetCimInstanceCompletions(
+    [CompletionResult[]] GetCimInstanceCompletions (
         [string] $commandName, 
         [string] $parameterName, 
         [string] $wordToComplete,

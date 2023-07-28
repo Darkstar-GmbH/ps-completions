@@ -9,10 +9,7 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule = 'PsCompletions.psd1'
-
-    # Name of the module
-    ModuleName = 'WsManCompletions'
+    RootModule = 'WsManCompletions.psm1'
 
     # Version number of this module.
     ModuleVersion = '0.1.0'
@@ -38,7 +35,7 @@
     Description = 'Provides completion functionality for the WSMan modules'
     
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion = '7'
+    PowerShellVersion = '7.0'
     
     # Name of the PowerShell host required by this module
     PowerShellHostName = 'ConsoleHost'
@@ -64,7 +61,7 @@
     RequiredAssemblies = @(
         'System.Management.Automation',
         'Microsoft.Management.Infrastructure'
-        'Micosoft.WSMan.Management'
+        'Microsoft.WSMan.Management'
     )
     
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
@@ -110,7 +107,7 @@
         PSData = @{
     
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @(completion module, cim, cimcmdlets, cimcompletions, completions, tabexpansionplusplus, tabexpansion++)
+            Tags = @('completion module', 'cim', 'cimcmdlets', 'cimcompletions', 'completions', 'tabexpansionplusplus', 'tabexpansion++')
     
             # A URL to the license for this module.
             LicenseUri = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
@@ -132,7 +129,7 @@
     
             # External dependent modules of this module
             ExternalModuleDependencies = @(
-                TabExpansionPlusPlus
+                'TabExpansionPlusPlus'
             )
     
         } # End of PSData hashtable
@@ -143,6 +140,6 @@
     HelpInfoURI = ''
     
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-    DefaultCommandPrefix = 'wsmancomp'
+    DefaultCommandPrefix = ''
     
     }
