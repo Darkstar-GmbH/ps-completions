@@ -1,0 +1,35 @@
+{
+  "name": "ps-completions",
+  "version": "0.1.0",
+  "description": "Provides several ps completion modules for the powershell",
+  "keywords": [
+    "completion",
+    "module",
+    "cim",
+    "cimcmdlets",
+    "cimcompletions",
+    "completions",
+    "tabexpansionplusplus",
+    "tabexpansion++"
+  ],
+  "author": "Ralf Rastlos <vollsynthetik@gmail.com>",
+  "company": "Darkstar GmbH",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Darkstar-GmbH/ps-completions/",
+    "directory": "/tree/",
+    "branch": "main"
+  },
+  "dependencies": {
+    "cimcmdlets": "^7.0.0",
+    "Microsoft.WsMan.Management": "^7.0.0",
+    "tabexpansionplusplus": "^1.2.0",
+    "PSReadLine": "^2.2.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "npm pack",
+    "deploy": ""
+  }
+}
