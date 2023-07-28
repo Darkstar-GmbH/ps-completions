@@ -9,7 +9,7 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule             = 'WsManCompletions.ps1'
+    RootModule             = 'CimCompletionProvider.psm1'
 
     # Version number of this module.
     ModuleVersion          = '0.1.0'
@@ -20,7 +20,7 @@
     )
     
     # ID used to uniquely identify this module
-    GUID                   = '7151d6b6-8dde-4d33-a65f-553c29444ac8'
+    GUID                   = '4b980212-7d73-48f0-9017-51208f1455b6'
     
     # Author of this module
     Author                 = 'vollsynthetik@gmail.com'
@@ -32,7 +32,7 @@
     Copyright              = '(c) Darkstar GmbH. All rights reserved.'
     
     # Description of the functionality provided by this module
-    Description            = 'Provides completion functionality for the WSMan modules'
+    Description            = 'Provides completion functionality for the cim module'
     
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion      = '7.0'
@@ -61,13 +61,10 @@
     RequiredAssemblies     = @(
         'System.Management.Automation',
         'Microsoft.Management.Infrastructure'
-        'Microsoft.WSMan.Management'
     )
     
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-    ScriptsToProcess       = @(
-        'WsManCompletions'
-    )
+    ScriptsToProcess       = @()
     
     # Type files (.ps1xml) to be loaded when importing this module
     TypesToProcess = @()
@@ -80,7 +77,8 @@
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        'GetWsManCompletions'
+        'Get-CimInstanceCompletions',
+        'Register-CimCompletionProvider'
     )
     
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -100,7 +98,7 @@
     
     # List of all files packaged with this module
     FileList = @(
-        'WsManCompletions.psm1'
+        'CimCompletionProvider.psm1'
     )
     
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
@@ -109,7 +107,7 @@
         PSData = @{
     
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @('completion module', 'cim', 'cimcmdlets', 'cimcompletions', 'completions', 'tabexpansionplusplus', 'tabexpansion++')
+            Tags = @('completionmodule', 'cim', 'cimcmdlets', 'cimcompletions', 'completions', 'tabexpansionplusplus', 'tabexpansion++')
     
             # A URL to the license for this module.
             LicenseUri = 'https://www.apache.org/licenses/LICENSE-2.0.txt'

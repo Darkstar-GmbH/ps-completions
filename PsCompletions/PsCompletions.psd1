@@ -58,10 +58,7 @@
     )
     
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies     = @(
-        'System.Management.Automation',
-        'Microsoft.Management.Infrastructure'
-    )
+    RequiredAssemblies     = @()
     
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
     ScriptsToProcess       = @()
@@ -74,8 +71,8 @@
     
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules          = @(
-        'completions/CimCompletions/CimCompletions',
-        'completions/WsManCompletions/WsManCompletions'
+        'provider\CimCompletionProvider\CimCompletionProvider',
+        'provider\WsManCompletionProvider\WsManCompletionProvider'
     )
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
