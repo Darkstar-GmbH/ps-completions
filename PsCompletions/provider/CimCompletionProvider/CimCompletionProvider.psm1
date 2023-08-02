@@ -30,6 +30,14 @@ New-Module -Name CimCompletionProvider {
         # register provider for Get-CimInstance
         & $registerFunction -CommandName "Get-CimInstance" -ParameterName "ClassName" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
         & $registerFunction -CommandName "Get-CimInstance" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Set-CimInstance" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "New-CimInstance" -ParameterName "ClassName" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "New-CimInstance" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Remove-CimInstance" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Get-Module" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Import-Module" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Invoke-CimMethod" -ParameterName "ClassName" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
+        & $registerFunction -CommandName "Invoke-CimMethod" -ParameterName "CimSession" -ScriptBlock { CimCompletionProvider\Get-CimInstanceCompletions @args }
     }
 
     function Get-CimInstanceCompletions {
@@ -37,64 +45,63 @@ New-Module -Name CimCompletionProvider {
 
         $param = @{}
 
-        switch -exact ($parameterName) { 
+        if (($commandName -eq "Get-CimInstance" -or
+                $commandName -eq "New-CimInstance" -or
+                $commandName -eq "Invoke-CimMethod") -and $parameterName -eq "ClassName") {
+                
+            # evaluate bound parameters
+            $ns = $fakeBoundParameter['Namespace']
+            $cs = $fakeBoundParameter['CimSession']
 
-            "ClassName" {
+            if ($ns) { $param.Namespace = $ns }
+            if ($cs) { $param.CimSession = $cs }
 
-                # evaluate bound parameters
-                $ns = $fakeBoundParameter['Namespace']
-                $cn = $fakeBoundParameter['ComputerName']
-                $cs = $fakeBoundParameter['CimSession']
-
-                if ($ns) { $param.Namespace = $ns }
-                if ($cn) { $param.ComputerName = $cn }
-                if ($cs) { $param.CimSession = $cs }
-
-                # evaluate completion result set
-                return @(CimCmdlets\Get-CimClass @param | 
-                    Select-Object -ExpandProperty CimClassProperties | 
-                    Select-Object -ExpandProperty Name | 
-                    Where-Object { $_ -like "$wordToComplete*" } | 
-                    Sort-Object | ForEach-Object {
-                        New-CompletionResult `
-                            -CompletionResultType ParameterValue `
-                            -CompletionText $_ `
-                            -ToolTip $_ `
-                            -ListItemText $_
-                    }
-                )
-            }
-
-            "CimSession" {
-
-                # evaluate bound parameters
-                $ns = $fakeBoundParameter['Namespace']
-                $cn = $fakeBoundParameter['ComputerName']
-                $cl = $fakeBoundParameter['ClassName']
-            
-                if ($ns) { $param.Namespace = $ns }
-                if ($cn) { $param.ComputerName = $cn }
-                if ($cl) { $param.ClassName = $cl }
+            # evaluate completion result set
+            return @(CimCmdlets\Get-CimClass @param -ClassName "*$wordToComplete*" | 
+                Select-Object -ExpandProperty CimClassName | 
+                Where-Object { $_ -like "*$wordToComplete*" } | 
+                Sort-Object | ForEach-Object {
+                    New-CompletionResult `
+                        -CompletionResultType ParameterValue `
+                        -CompletionText $_ `
+                        -ToolTip $_ `
+                        -ListItemText $_
+                }
+            )
+        }
         
-                # evaluate completion result set
-                return @(CimCmdlets\Get-CimSession @param |
-                    ForEach-Object {
-                        $compound = @{}
-                        $compound.Id = $_.Id
-                        $compound.Session = $_
-                        $compound.InstanceId = $_.InstanceId
-                        $compound.Text = $_.ComputerName + ": " + $_.Id 
-                        $compound
-                    } | Where-Object { $_.Id -like "$wordToComplete*" } | 
-                    Sort-Object -Property "Text" | ForEach-Object {
-                        New-CompletionResult `
-                            -CompletionResultType Variable `
-                            -CompletionText $('$(' + "Get-CimSession -Id " + "$($_.Id)" + ')') `
-                            -ToolTip $_.InstanceId `
-                            -ListItemText $_.Text
-                    }
-                )
-            }
+        if (($commandName -eq "Get-CimInstance" -or
+                $commandName -eq "Set-CimInstance" -or
+                $commandName -eq "New-CimInstance" -or
+                $commandName -eq "Remove-CimInstance" -or
+                $commandName -eq "Get-Module" -or
+                $commandName -eq "Import-Module" -or
+                $commandName -eq "Invoke-CimMethod") -and $parameterName -eq "CimSession") {
+
+            # evaluate bound parameters
+            $ns = $fakeBoundParameter['Namespace']
+        
+            if ($ns) { $param.Namespace = $ns }
+    
+            # evaluate completion result set
+            return @(CimCmdlets\Get-CimSession @param |
+                ForEach-Object {
+                    $compound = @{}
+                    $compound.Id = $_.Id
+                    $compound.Session = $_
+                    $compound.InstanceId = $_.InstanceId
+                    $compound.ComputerName = $_.ComputerName
+                    $compound.Text = $_.ComputerName + ": " + $_.Id 
+                    $compound
+                } | Where-Object { $_.Text -like "$wordToComplete*" } | 
+                Sort-Object -Property "Text" | ForEach-Object {
+                    New-CompletionResult `
+                        -CompletionResultType Variable `
+                        -CompletionText $('$(' + "Get-CimSession -Id " + "$($_.Id)" + ')') `
+                        -ToolTip $_.InstanceId `
+                        -ListItemText $_.Text
+                }
+            )
         }
     }
 
