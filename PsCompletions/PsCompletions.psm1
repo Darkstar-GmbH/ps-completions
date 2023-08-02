@@ -8,9 +8,11 @@
 # import all completion modules we have
 using module provider/CimCompletionProvider
 using module provider/WsManCompletionProvider
+using module provider/FirewallCompletionProvider
 
 Import-Module TabExpansionPlusPlus
 
 # register all completion providers
 CimCompletionProvider\Register-CimCompletionProvider
 WsManCompletionProvider\Register-WsManCompletionProvider
+FirewallCompletionProvider\Register-FirewallCompletionProvider
